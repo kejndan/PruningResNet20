@@ -1,5 +1,4 @@
 from config import cfg
-
 import torch.nn.functional as F
 from model import ResNet20
 from pruning import *
@@ -8,6 +7,7 @@ import clearml
 from train import train
 from test import test
 from utils import load_model
+from pruning import clustering_filters_models
 
 
 def main():
@@ -35,7 +35,7 @@ def main():
             os.makedirs(os.path.join(cfg.path_to_logs, dir_))
 
 
-    # train(model,loss_func,optimizer,cfg)
+    train(model,loss_func,optimizer,cfg)
     model, optimizer, start_epoch, max_accuracy = load_model(os.path.join(cfg.path_to_saves, cfg.name_save),
                                                              model,
                                                              cfg,
