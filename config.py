@@ -10,7 +10,7 @@ cfg.path_to_logs = 'logs'
 cfg.dirs_logs = ['eval','loss']
 
 cfg.clearml_logging = False
-cfg.path_to_keys = 'keys.txt'
+cfg.path_to_keys = '../keys.txt'
 cfg.project_name = 'Demo'
 cfg.task_name = 'Find best score'
 cfg.logger = None
@@ -19,7 +19,7 @@ cfg.evaluate_on_train_data = True
 cfg.evaluate_on_validation_data = False
 cfg.valid_size = 0.2
 
-cfg.load_save = False
+cfg.load_save = True
 cfg.name_save = 'best_checkpoint'
 
 

@@ -1,12 +1,6 @@
 import numpy as np
 import torch
-import os
-from model import ResNet20
 from config import cfg
-from utils import load_model
-from pyclustering.cluster.kmeans import kmeans
-from pyclustering.cluster.center_initializer import kmeans_plusplus_initializer
-from test import test
 from copy import deepcopy
 import re
 

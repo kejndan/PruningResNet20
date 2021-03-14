@@ -31,7 +31,7 @@ def load_model(load_path, model, cfg, optimizer=None):
                     state[k] = v.to(cfg.device)
     return model, optimizer, start_epoch, max_accuracy
 
-def plot(name,axes, cfg,xlabel=None,ylabel=None):
+def plot(name,axes, cfg,xlabel=None,ylabel=None,plot_label=None):
     x = []
     y = []
     with open(os.path.join(cfg.path_to_logs,name),'r') as f:
@@ -39,7 +39,10 @@ def plot(name,axes, cfg,xlabel=None,ylabel=None):
             v1, v2 = line.split()
             x.append(int(v1))
             y.append(float(v2))
-    axes.plot(x,y)
+    if plot_label is not None:
+        axes.plot(x,y,labels=plot_label)
+    else:
+        axes.plot(x,y)
     if xlabel is not None:
         axes.set_xlabel(xlabel)
     if ylabel is not None:

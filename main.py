@@ -1,13 +1,12 @@
-from config import cfg
 import torch.nn.functional as F
-from model import ResNet20
 from pruning import *
 import os
 import clearml
 from train import train
 from test import test
 from utils import load_model
-from pruning import clustering_filters_models
+from resnet20 import ResNet20
+
 
 
 def main():

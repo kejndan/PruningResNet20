@@ -4,10 +4,11 @@ from dataset_cifar10 import CIFAR10
 from utils import load_model, log_metric
 from torch.utils.data import DataLoader
 from test import evaluate
+from torchsummary import summary
 
 
 
-def train(model, criterion, optimizer, cfg):
+def train(model, criterion, optimizer, cfg, manual_load=None):
     ds_train = CIFAR10(cfg.path_to_dataset, cfg, transform_mode='train')
     dl_train = DataLoader(ds_train, batch_size=cfg.batch_size, shuffle=True)
 
@@ -23,6 +24,12 @@ def train(model, criterion, optimizer, cfg):
                                                                  model,
                                                                  cfg,
                                                                  optimizer)
+
+    elif manual_load is not None:
+        optimizer = manual_load['optimizer']
+        start_epoch = manual_load['epoch']
+        max_accuracy = manual_load['max_accuracy']
+
     else:
         start_epoch = 0
         max_accuracy = 0
@@ -78,9 +85,9 @@ def training_epoch(data_loader, model, criterion, optimizer,epoch, cfg):
 
         output = model(images)
         loss = criterion(output, labels, reduction='mean')
-        log_metric('loss/train_loss', total_iter*epoch+iter, loss.item(), cfg)
+        log_metric('loss/train_loss_finetune', total_iter*epoch+iter, loss.item(), cfg)
         if cfg.logger is not None:
-            cfg.logger.report_scalar('loss','train_loss',loss.item(),total_iter*epoch+iter)
+            cfg.logger.report_scalar('loss','train_loss_finetune',loss.item(),total_iter*epoch+iter)
 
         optimizer.zero_grad()
         loss.backward()
