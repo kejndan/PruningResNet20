@@ -1,6 +1,7 @@
 import torch
 import clearml
 import os
+import matplotlib.pyplot as plt
 
 
 def to_logger(path,step,val):
@@ -29,3 +30,38 @@ def load_model(load_path, model, cfg, optimizer=None):
                 if isinstance(v, torch.Tensor):
                     state[k] = v.to(cfg.device)
     return model, optimizer, start_epoch, max_accuracy
+
+def plot(name,axes, cfg,xlabel=None,ylabel=None):
+    x = []
+    y = []
+    with open(os.path.join(cfg.path_to_logs,name),'r') as f:
+        for line in f.readlines():
+            v1, v2 = line.split()
+            x.append(int(v1))
+            y.append(float(v2))
+    axes.plot(x,y)
+    if xlabel is not None:
+        axes.set_xlabel(xlabel)
+    if ylabel is not None:
+        axes.set_ylabel(ylabel)
+    axes.set_title(name)
+
+def plot_F_with_axes(axes, store):
+    names = list(store.keys())
+    idx = 0
+    for row in range(6):
+        for column in range(5):
+            name = names[idx]
+            length = len(store[name][0])
+            accuracy = np.array(store[name][1])
+            uniq_params = np.array(store[name][0])
+            axes[row, column].plot(np.arange(2,length+2),accuracy/uniq_params)
+            axes[row,column].set_xlabel('Nums clusters')
+            axes[row,column].set_ylabel('F')
+            axes[row,column].set_title(name)
+            idx += 1
+            if idx == len(names):
+                break
+        if idx == len(names):
+            break
+    plt.show()

@@ -4,8 +4,9 @@ from utils import log_metric
 from dataset_cifar10 import CIFAR10
 
 
-def evaluate(data_loader, model, epoch, cfg,  mode='train'):
-    print(f'Evaluate on {mode} data')
+def evaluate(data_loader, model, epoch, cfg,  mode='train', with_logs=True, with_print=True):
+    if with_print:
+        print(f'Evaluate on {mode} data')
     model.eval()
     nb_classes = data_loader.dataset.nb_classes
     conf_matrix = np.zeros((nb_classes, nb_classes))
@@ -27,11 +28,14 @@ def evaluate(data_loader, model, epoch, cfg,  mode='train'):
                 conf_matrix[y_true[i], y_pred[i]] += 1
 
         if iter % 50 == 0:
-            print(f'Epoch: {epoch}. Batchs {iter} of {total_iter}.')
+            if with_print:
+                print(f'Epoch: {epoch}. Batchs {iter} of {total_iter}.')
 
     accuracy = accuracy_sum / len(data_loader.dataset)
-    print(f'Epoch:{epoch}. {mode} accuracy {accuracy}')
-    log_metric(f'eval/accuracy_{mode}',epoch,accuracy,cfg)
+    if with_print:
+        print(f'Epoch:{epoch}. {mode} accuracy {accuracy}')
+    if with_logs:
+        log_metric(f'eval/accuracy_{mode}',epoch,accuracy,cfg)
 
     if cfg.logger is not None:
         labels = data_loader.dataset.name_classes
@@ -41,10 +45,10 @@ def evaluate(data_loader, model, epoch, cfg,  mode='train'):
     return accuracy
 
 
-def test(model, cfg,epoch=None):
+def test(model, cfg,epoch=None, with_print=True):
     ds_test = CIFAR10(cfg.path_to_dataset, cfg, work_mode='test', transform_mode='test')
     dl_test = torch.utils.data.DataLoader(ds_test, batch_size=cfg.batch_size, shuffle=True)
-    evaluate(dl_test,model,epoch,cfg,mode='test')
+    return evaluate(dl_test,model,epoch,cfg,mode='test',with_logs=False,with_print=with_print)
 
 if __name__ == '__main__':
     print('Evaluate funcs module')

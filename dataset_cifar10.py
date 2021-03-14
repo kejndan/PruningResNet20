@@ -6,11 +6,13 @@ import numpy as np
 from sklearn.model_selection import train_test_split
 from PIL import Image
 from collections import Counter
+import torchvision
 
 
 def unpickle(path):
     with open(path, 'rb') as f:
         return pickle.load(f, encoding='bytes')
+
 
 class CIFAR10(torch.utils.data.Dataset):
     def __init__(self, path, cfg, work_mode='train', transform_mode='train', augmentation=True):
@@ -29,6 +31,7 @@ class CIFAR10(torch.utils.data.Dataset):
         train_batches = list(map(unpickle, self.train_paths))
         test_batches = unpickle(self.test_paths)
         self.name_classes = [name.decode('utf-8') for name in unpickle(self.meta_path)[b'label_names']]
+        self.nb_classes = 10
 
         if work_mode == 'train' or work_mode == 'valid':
             full_train_X = np.concatenate([batch[b'data'] for batch in train_batches]).reshape([-1, 3, 32, 32]).astype('uint8')
@@ -61,9 +64,8 @@ class CIFAR10(torch.utils.data.Dataset):
         img = Image.fromarray(img)
         if self.transform_mode == 'train':
             transforms_aug = transforms.Compose([
-                transforms.RandomCrop(self.crop_size, padding=4),
-                transforms.RandomRotation([-self.angle_rotation, self.angle_rotation]),
                 transforms.RandomHorizontalFlip(),
+                transforms.RandomCrop(32, 4),
                 transforms.ToTensor(),
                 transforms.Normalize(self.means, self.stds),
             ])
