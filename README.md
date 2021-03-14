@@ -1,4 +1,4 @@
-Коды для получения всех результатов приведенных ниже есть в [notebook](result.ipynb)
+Коды для получения всех результатов приведенных ниже есть в [notebook](https://github.com/kejndan/PruningResNet20/blob/main/extra/results.ipynb)
 
 На данном [сайте](https://app.community.clear.ml/projects/800d5c330efd47c59ee35f31624cc324/experiments/2d1136282547455dbbedc567336d7a93/output/execution) можно посмотреть на интерактивных графика с процесса обучения в разделе Scalars,
 а также на Confusion Matrix в разделе Plots
