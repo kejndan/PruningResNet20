@@ -1,3 +1,7 @@
+Коды для получения всех результатов приведенных ниже есть в [notebook](result.ipynb)
+
+На данном [сайте](https://app.community.clear.ml/projects/800d5c330efd47c59ee35f31624cc324/experiments/2d1136282547455dbbedc567336d7a93/output/execution) можно посмотреть на интерактивных графика с процесса обучения в разделе Scalars,
+а также на Confusion Matrix в разделе Plots
 # Точность результатов
 На тестовой выборке она достигла: 90.87%
 ![](imgs/train_graphs.png)
